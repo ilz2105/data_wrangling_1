@@ -1,5 +1,5 @@
 ---
-title: "data import"
+title: "Data Import"
 author: "Lulu Zhang"
 date: "9/17/19"
 output: github_document
@@ -21,15 +21,60 @@ litters_data= read_csv(file = "./data_import_examples/FAS_litters.csv")
 litters_data = janitor::clean_names(litters_data)
 
 view(litters_data)
+
 ```
 
-### load in the pups data
+### Parsed with column specification - its guessing whta column type
+
+
+### Load in the pups data
 
 ```{r}
 
 pups_data = read_csv(file = "./data_import_examples/FAS_pups.csv")
 pups_data = janitor::clean_names(pups_data)
- tail(pups_data)
 
+tail(pups_data)
  
- ```
+```
+ 
+### Play with column parsing 
+ 
+```{r}
+
+ litters_data = read_csv(file = "./data_import_examples/FAS_litters.csv")
+  cols(
+ Group = col_character(),
+  `Litter Number` = col_character(),
+     `GD0 weight` = col_double(),
+   `GD18 weight` = col_double(),
+   `GD of Birth` = col_double(),
+   `Pups born alive` = col_double(),
+   `Pups dead @ birth` = col_double(),
+   `Pups survive` = col_double()
+ )
+ 
+```
+ 
+### Read in Excel file
+
+```{r}
+
+library(readxl)
+
+mlb11_data = read_excel(
+    path = "./data_import_examples/mlb11.xlsx",
+    range = "A1:D7"
+    )
+
+```
+
+### Read in SAS
+
+```{r}
+library(haven)
+pulse_data = haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat") 
+
+view(pulse_data)
+```
+ 

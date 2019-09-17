@@ -1,4 +1,4 @@
-data import
+Data Import
 ================
 Lulu Zhang
 9/17/19
@@ -29,7 +29,9 @@ litters_data = janitor::clean_names(litters_data)
 view(litters_data)
 ```
 
-### load in the pups data
+### Parsed with column specification - its guessing whta column type
+
+### Load in the pups data
 
 ``` r
 pups_data = read_csv(file = "./data_import_examples/FAS_pups.csv")
@@ -47,7 +49,8 @@ pups_data = read_csv(file = "./data_import_examples/FAS_pups.csv")
 
 ``` r
 pups_data = janitor::clean_names(pups_data)
- tail(pups_data)
+
+tail(pups_data)
 ```
 
     ## # A tibble: 6 x 6
@@ -59,3 +62,65 @@ pups_data = janitor::clean_names(pups_data)
     ## 4 #82/4             2       4      13        7       9
     ## 5 #82/4             2       3      13        7       9
     ## 6 #82/4             2       3      13        7       9
+
+### Play with column parsing
+
+``` r
+ litters_data = read_csv(file = "./data_import_examples/FAS_litters.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Group = col_character(),
+    ##   `Litter Number` = col_character(),
+    ##   `GD0 weight` = col_double(),
+    ##   `GD18 weight` = col_double(),
+    ##   `GD of Birth` = col_double(),
+    ##   `Pups born alive` = col_double(),
+    ##   `Pups dead @ birth` = col_double(),
+    ##   `Pups survive` = col_double()
+    ## )
+
+``` r
+  cols(
+ Group = col_character(),
+  `Litter Number` = col_character(),
+     `GD0 weight` = col_double(),
+   `GD18 weight` = col_double(),
+   `GD of Birth` = col_double(),
+   `Pups born alive` = col_double(),
+   `Pups dead @ birth` = col_double(),
+   `Pups survive` = col_double()
+ )
+```
+
+    ## cols(
+    ##   Group = col_character(),
+    ##   `Litter Number` = col_character(),
+    ##   `GD0 weight` = col_double(),
+    ##   `GD18 weight` = col_double(),
+    ##   `GD of Birth` = col_double(),
+    ##   `Pups born alive` = col_double(),
+    ##   `Pups dead @ birth` = col_double(),
+    ##   `Pups survive` = col_double()
+    ## )
+
+### Read in Excel file
+
+``` r
+library(readxl)
+
+mlb11_data = read_excel(
+    path = "./data_import_examples/mlb11.xlsx",
+    range = "A1:D7"
+    )
+```
+
+### Read in SAS
+
+``` r
+library(haven)
+pulse_data = haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat") 
+
+view(pulse_data)
+```
