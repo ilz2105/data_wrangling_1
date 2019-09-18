@@ -29,7 +29,7 @@ litters_data = janitor::clean_names(litters_data)
 view(litters_data)
 ```
 
-### Parsed with column specification - its guessing whta column type
+### Parsed with column specification - its guessing what column type
 
 ### Load in the pups data
 
@@ -114,6 +114,9 @@ mlb11_data = read_excel(
     path = "./data_import_examples/mlb11.xlsx",
     range = "A1:D7"
     )
+
+
+write_csv(mlb11_data, path = "./data_import_examples/mlb_subset.csv")
 ```
 
 ### Read in SAS
