@@ -79,4 +79,117 @@ pulse_data = haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat"
 
 view(pulse_data)
 ```
- 
+
+## Import datasets
+
+```{r}
+
+litters_data= read_csv(file = "./data_import_examples/FAS_litters.csv")
+litters_data = janitor::clean_names(litters_data)
+
+
+
+pups_data = read_csv(file = "./data_import_examples/FAS_pups.csv")
+pups_data = janitor::clean_names(pups_data)
+
+
+```
+
+
+## selecting
+
+```{r}
+#specify the columns you want to keep by naming all of them:
+select(litters_data, group, litter_number, gd0_weight, pups_born_alive)
+
+# specify the specify a range of columns to keep
+select(litters_data, group:gd_of_birth)
+
+# You can also specify columns you’d like to remove
+select(litters_data, -pups_survive)
+
+#  rename variables as part of this process
+select(litters_data, GROUP = group, LiTtEr_NuMbEr = litter_number)
+
+# everything:reorganizing columns without discarding anything
+select(litters_data, litter_number, group, everything())
+
+# - sign removes it; ere we remove 'group'
+select(litters_data, - group)
+
+# keep litter number, kee everything between gd)_weight and pups_born_alive and gets rid of everything else
+select(litters_data, litter_number, gd0_weight:pups_born_alive)
+
+# litters data wont be modified until we save it with a new name
+new_litters_df = select(litters_data, litter_number, gd0_weight:pups_born_alive)
+
+
+# rename group as "GROUP"; this helps when variable names that came out of spreadsheet
+# were overly descriptive and want it to be simpler
+select(litters_data, GROUP = group, litter_number)
+
+# rename function just renames columns, not variables
+rename(litters_data, GROUP = group)
+
+# In the pups data, select the columns containing litter number, sex, and PD ears.
+select(pups_data, litter_number, sex, pd_ears) 
+```
+
+
+```{r}
+
+# ask question and it keeps the rows for which the
+# logical question is true
+
+#filter(litters_data, group = "Con7")
+
+## == is asking if they are equal; asking a logical question
+
+#filter(litters_data, group =="Mod8")
+
+# spits out all  data where gd_of_birth = 20
+filter(litters_data, gd_of_birth == 20)
+
+# pups born on day 19
+filter(litters_data, gd_of_birth < 20)
+
+# only liters with pups born lalive ess than 6
+filter(litters_data, pups_born_alive < 6)
+
+# %in% to check more than one group
+# ! not 
+# or; use the bottom code if you can!!!
+# filter(litters_data, group == "Con7" | group == "Mod8")
+filter(litters_data, group %in% c("Con7", "Mod8"))
+
+
+
+# what should you do about missing values?
+# filter(litters_data, is.na(gd0_weight))
+# dont use !, use drop_na
+# can specify column or dont list column and it will
+# remove all missing values in all columns
+drop_na(litters_data)
+drop_na(litters_data, gd0_weight)
+```
+
+## mutate
+
+```{r}
+
+mutate(litters_data,
+       wt_gain = gd18_weight - gd0_weight,
+       group = str_to_lower(group))
+
+```
+
+## Arrange
+
+```{r}
+arrange(litters_data,  pups_born_alive)
+
+arrange(litters_data, desc(pups_born_alive))
+
+
+arrange(litters_data, pups_born_alive, gd0_weight)
+```
